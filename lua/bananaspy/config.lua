@@ -1,5 +1,7 @@
 vim.g.netrw_banner = 0
 
+vim.o.cursorline = true
+
 vim.o.relativenumber = true
 vim.o.updatetime = 50
 
