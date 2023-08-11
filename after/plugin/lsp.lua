@@ -1,5 +1,24 @@
 local lsp = require('lsp-zero').preset({})
 
+-- (Optional) Configure lua language server for neovim
+local cfg = require('lspconfig')
+cfg.lua_ls.setup(lsp.nvim_lua_ls())
+
+lsp.ensure_installed({
+        'tsserver',
+        'eslint',
+})
+
+lsp.set_preferences({
+    suggest_lsp_servers = false,
+    sign_icons = {
+        error = 'E',
+        warn = 'W',
+        hint = 'H',
+        info = 'I'
+    }
+})
+
 lsp.on_attach(function(_, bufnr)
         -- see :help lsp-zero-keybindings
         -- to learn the available actions
@@ -14,28 +33,7 @@ lsp.on_attach(function(_, bufnr)
         vim.keymap.set("n", "]d>", function() vim.diagnostic.goto_next() end, opts)
 end)
 
--- (Optional) Configure lua language server for neovim
-local cfg = require('lspconfig')
-cfg.lua_ls.setup(lsp.nvim_lua_ls())
-
-lsp.ensure_installed({
-        'tsserver',
-        'eslint',
-})
-
 lsp.setup()
-
-vim.diagnostic.config({
-        virtual_text = false,
-        severity_sort = true,
-        float = {
-                style = 'minimal',
-                border = 'rounded',
-                source = 'always',
-                header = '',
-                prefix = '',
-        },
-})
 
 local cmp = require('cmp')
 
@@ -61,6 +59,18 @@ cmp.setup({
         mapping = {
                 ['<CR>'] = cmp.mapping.confirm({ select = false }),
                 ['C-o'] = cmp.mapping.complete(),
+        },
+})
+
+vim.diagnostic.config({
+        virtual_text = true,
+        severity_sort = true,
+        float = {
+                style = 'minimal',
+                border = 'rounded',
+                source = 'always',
+                header = '',
+                prefix = '',
         },
 })
 
