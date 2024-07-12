@@ -1,79 +1,53 @@
-local lsp = require('lsp-zero').preset({})
-
--- (Optional) Configure lua language server for neovim
-local cfg = require('lspconfig')
-cfg.lua_ls.setup(lsp.nvim_lua_ls())
-
-lsp.ensure_installed({
-        'tsserver',
-        'eslint',
-        'gopls',
-})
-
-lsp.set_preferences({
-    suggest_lsp_servers = false,
-    sign_icons = {
-        error = 'E',
-        warn = 'W',
-        hint = 'H',
-        info = 'I'
-    }
-})
+local lsp = require('lsp-zero')
+local lspconfig = require('lspconfig')
 
 lsp.on_attach(function(_, bufnr)
-        -- see :help lsp-zero-keybindings
-        -- to learn the available actions
-        -- lsp.default_keymaps({buffer = bufnr})
+  -- see :help lsp-zero-keybindings
+  -- to learn the available actions
+  -- lsp.default_keymaps({buffer = bufnr})
 
-        local opts = {buffer = bufnr, remap = false}
-        lsp.buffer_autoformat()
+  local opts = { buffer = bufnr, remap = false }
+  lsp.buffer_autoformat()
 
-        vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-        vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-        vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-        vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
-        vim.keymap.set("n", "]d>", function() vim.diagnostic.goto_next() end, opts)
-        vim.keymap.set("n", "<leader>F", function() vim.lsp.buf.format() end, opts)
+  vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+  vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
+  vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
+  vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
+  vim.keymap.set("n", "]d>", function() vim.diagnostic.goto_next() end, opts)
+  vim.keymap.set("n", "<leader>F", function() vim.lsp.buf.format() end, opts)
 end)
 
-lsp.setup()
+lspconfig.gopls.setup({})
+lspconfig.clangd.setup({})
 
-local cmp = require('cmp')
+lspconfig.lua_ls.setup({
+  on_init = function(client)
+    local path = client.workspace_folders[1].name
+    if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+      return
+    end
 
-require('luasnip.loaders.from_vscode').lazy_load()
-
-vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
-
-cmp.setup({
-        preselect = 'item',
-        completion = {
-                completeopt = 'menu,menuone,noinsert'
-        },
-        window = {
-                documention = cmp.config.window.bordered(),
-        },
-        sources = {
-                {name = 'path'},
-                {name = 'nvim_lsp'},
-                {name = 'nvim_lua'},
-                {name = 'buffer', keyword_length = 3},
-                {name = 'luasnip', keyword_length = 2},
-        },
-        mapping = {
-                ['<CR>'] = cmp.mapping.confirm({ select = false }),
-                ['C-o'] = cmp.mapping.complete(),
-        },
+    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+      runtime = {
+        -- Tell the language server which version of Lua you're using
+        -- (most likely LuaJIT in the case of Neovim)
+        version = 'LuaJIT'
+      },
+      -- Make the server aware of Neovim runtime files
+      workspace = {
+        checkThirdParty = false,
+        library = {
+          vim.env.VIMRUNTIME
+          -- Depending on the usage, you might want to add additional paths here.
+          -- "${3rd}/luv/library"
+          -- "${3rd}/busted/library",
+        }
+        -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+        -- library = vim.api.nvim_get_runtime_file("", true)
+      }
+    })
+  end,
+  settings = {
+    Lua = {}
+  }
 })
-
-vim.diagnostic.config({
-        virtual_text = true,
-        severity_sort = true,
-        float = {
-                style = 'minimal',
-                border = 'rounded',
-                source = 'always',
-                header = '',
-                prefix = '',
-        },
-})
-
