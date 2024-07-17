@@ -1,1 +1,1 @@
-require("bnnsp")
+require("config")
