@@ -1,40 +1,42 @@
--- Bootstrap lazy.nvim
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
+local M = {}
+
+function M.ensure_installed()
+  -- Bootstrap lazy.nvim
+  local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+  if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+    local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+    if vim.v.shell_error ~= 0 then
+      vim.api.nvim_echo({
+        { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+        { out, "WarningMsg" },
+        { "\nPress any key to exit..." },
+      }, true, {})
+      vim.fn.getchar()
+      os.exit(1)
+    end
   end
+
+  vim.opt.rtp:prepend(lazypath)
 end
 
-vim.opt.rtp:prepend(lazypath)
+function M.setup()
+  -- Setup lazy.nvim
+  require("lazy").setup({
+    spec = {
+      -- import your plugins
+      { import = "plugins" },
+    },
 
--- add support for the LazyFile event
-local Event = require("lazy.core.handler.event")
+    -- Configure any other settings here. See the documentation for more details.
 
-Event.mappings.LazyFile = { id = "LazyFile", event = { "BufReadPost", "BufNewFile", "BufWritePre" } }
-Event.mappings["User LazyFile"] = Event.mappings.LazyFile
+    -- colorscheme that will be used when installing plugins.
+    install = { colorscheme = { "habamax" } },
 
--- Setup lazy.nvim
-require("lazy").setup({
-  spec = {
-    -- import your plugins
-    { import = "plugins" },
-  },
+    -- uncomment to automatically check for plugin updates
+    -- checker = { enabled = true },
+  })
+end
 
-  -- Configure any other settings here. See the documentation for more details.
-
-  -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "habamax" } },
-
-  -- automatically check for plugin updates
-  -- checker = { enabled = true },
-})
+return M
 

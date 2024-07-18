@@ -1,13 +1,13 @@
 {
   "harpoon": { "branch": "harpoon2", "commit": "0378a6c428a0bed6a2781d459d7943843f374bce" },
-  "lazy.nvim": { "branch": "main", "commit": "9d445ebbd89401544a538c6af080e4d2785abb49" },
-  "mini.icons": { "branch": "main", "commit": "9d9d21868841ce0a26fb2b8ef0eba7021055145c" },
+  "lazy.nvim": { "branch": "main", "commit": "8f6225751138329da339eb6554d40158768d23ff" },
+  "mini.icons": { "branch": "main", "commit": "c291191e2a2a99f8aeea5e4d6406af54d11c9608" },
   "nvim-autopairs": { "branch": "master", "commit": "78a4507bb9ffc9b00f11ae0ac48243d00cb9194d" },
-  "nvim-treesitter": { "branch": "master", "commit": "a8c1f36d2c7246125da565642a4d015732b61458" },
+  "nvim-treesitter": { "branch": "master", "commit": "874b99065b4b00b84b0ca5fa63490c93728a45ab" },
   "nvim-treesitter-textobjects": { "branch": "master", "commit": "34867c69838078df7d6919b130c0541c0b400c47" },
-  "nvim-ts-autotag": { "branch": "main", "commit": "26c365cc7d58d0da17b13e747855d331eb26fcf0" },
+  "nvim-ts-autotag": { "branch": "main", "commit": "1624866a1379fc1861797f0ed05899a9c1d2ff61" },
   "persistence.nvim": { "branch": "main", "commit": "40a137dd9240c9c6760c53df48d2b155f52c252b" },
   "plenary.nvim": { "branch": "master", "commit": "a3e3bc82a3f95c5ed0d7201546d5d2c19b20d683" },
-  "tokyonight.nvim": { "branch": "main", "commit": "6adfcde66e8af2f22dd5d76060980abd8daa0df8" },
-  "which-key.nvim": { "branch": "main", "commit": "21f3465ecd68b4e7cf84bb0b88c72cc23ff7838b" }
+  "tokyonight.nvim": { "branch": "main", "commit": "1471dab694ad88351185758bb4275624d8b798ec" },
+  "which-key.nvim": { "branch": "main", "commit": "439d1247cbfed8ee46d6c9a5edbfad6b4c968e06" }
 }
