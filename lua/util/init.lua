@@ -7,6 +7,9 @@ setmetatable(M, {
     if LazyCoreUtil[k] then
       return LazyCoreUtil[k]
     end
+
+    t[k] = require("util." .. k)
+    return t[k]
   end
 })
 
@@ -33,6 +36,9 @@ function M.safe_keymap_set(mode, key, handler, opts)
   end
 end
 
+-- VeryLazy is triggered by lazy.nvim after LazyDone (i.e. after
+-- plugin manager has finished starting up and loaded user config)
+-- and processing VimEnter autocommands
 function M.on_very_lazy(fn)
   vim.api.nvim_create_autocmd("User", {
     pattern = "VeryLazy",
@@ -40,6 +46,14 @@ function M.on_very_lazy(fn)
       fn()
     end
   })
+end
+
+-- emulate undo break creation
+M.CREATE_UNDO = vim.api.nvim_replace_termcodes("<c-G>u", true, true, true)
+function M.create_undo()
+  if vim.api.nvim_get_mode().mode == "i" then
+    vim.api.nvim_feedkeys(M.CREATE_UNDO, "n", false)
+  end
 end
 
 return M
