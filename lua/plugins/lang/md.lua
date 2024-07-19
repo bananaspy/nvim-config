@@ -1,3 +1,9 @@
+LazyUtil.on_very_lazy(function()
+  vim.filtetype.add({
+    extension = { mdx = "markdown.mdx" },
+  })
+end)
+
 return {
   {
     "stevearc/conform.nvim",
