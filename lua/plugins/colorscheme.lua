@@ -4,6 +4,14 @@ return {
   priority = 1000, -- make sure to load this before all the other start plugins
   config = function()
     -- load the colorscheme here
+    require("tokyonight").setup({
+      -- style = "day",
+      -- style = "night",
+      -- on_highlights = function(hl, c)
+      --   hl.Cursor.fg = c.red
+      --   hl.Cursor.bg = c.green
+      -- end
+    })
     vim.cmd([[colorscheme tokyonight]])
   end,
 }
