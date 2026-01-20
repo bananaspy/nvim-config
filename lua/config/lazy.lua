@@ -9,7 +9,7 @@ function M.ensure_installed()
     if vim.v.shell_error ~= 0 then
       vim.api.nvim_echo({
         { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-        { out, "WarningMsg" },
+        { out,                            "WarningMsg" },
         { "\nPress any key to exit..." },
       }, true, {})
       vim.fn.getchar()
@@ -39,4 +39,3 @@ function M.setup()
 end
 
 return M
-

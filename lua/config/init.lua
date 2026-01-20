@@ -1,5 +1,4 @@
 local LazyPluginManager = require("config.lazy")
-
 LazyPluginManager.ensure_installed()
 
 _G.LazyUtil = require("util")
@@ -47,4 +46,3 @@ function M.init()
 end
 
 return M
-
